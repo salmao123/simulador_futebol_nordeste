@@ -5,12 +5,12 @@ class Mundo():
 
     def __init__(self):
         self.campeonatos = []
-        self.times = []
 
     def adicionar_campeonato(self, campeonato):
         self.campeonatos.append(campeonato)
 
     def todos_times(self):
+        self.times = []
         for x in self.campeonatos:
             for y in x.times:
                 self.times.append(y)
@@ -43,8 +43,11 @@ class Campeonato():
         print(tabela.sort_values(by="Pontos", ascending=False))
 
     def simular_temporada(self):
+        for time in self.times:
+            time.jogos = 0
+            time.pontos = 0
         rodadas = 0
-        while rodadas < 10:
+        while rodadas < 18:
             print()
             print(f"--- Rodada {rodadas + 1} ---")
             print()
@@ -85,14 +88,14 @@ class Partida():
         print(f"{self.casa.nome} {self.gols_casa} X {self.gols_fora} {self.fora.nome}")
 
     def jogar_tempo(self):
-        for c in range(5):
-            dado = random.randint(1, 100)
-            if dado >= 100 - self.casa.forca - 10:
+        for c in range(4):
+            dado = random.randint(1, 160)
+            if dado >= 160 - self.casa.forca - 15:
                 self.gols_casa += 1
 
-        for f in range(5):
-            dado = random.randint(1, 100)
-            if dado >= 100 - self.fora.forca:
+        for f in range(4):
+            dado = random.randint(1, 160)
+            if dado >= 160 - self.fora.forca:
                 self.gols_fora += 1
 
     def resultado(self):
@@ -110,68 +113,68 @@ class Partida():
 
 mundo = Mundo()
 
-al1 = Time("CSA", 9)
-al2 = Time("CRB", 10)
-al3 = Time("ASA", 7)
-al4 = Time("Murici", 5)
-al5 = Time("Coruripe", 5)
-al6 = Time("CSE", 4)
+al1 = Time("CSA", 13)
+al2 = Time("CRB", 14)
+al3 = Time("ASA", 10)
+al4 = Time("Murici", 7)
+al5 = Time("Coruripe", 7)
+al6 = Time("CSE", 5)
 
-se1 = Time("Confiança", 10)
-se2 = Time("Sergipe", 9)
-se3 = Time("Itabaiana", 9)
-se4 = Time("Lagarto", 7)
-se5 = Time("Dorense", 4)
-se6 = Time("América de Propriá", 3)
+se1 = Time("Confiança", 14)
+se2 = Time("Sergipe", 13)
+se3 = Time("Itabaiana", 13)
+se4 = Time("Lagarto", 10)
+se5 = Time("Dorense", 6)
+se6 = Time("América de Propriá", 4)
 
-pe1 = Time("Sport", 12)
-pe2 = Time("Náutico", 10)
-pe3 = Time("Santa Cruz", 9)
-pe4 = Time("Retrô", 9)
-pe5 = Time("Salgueiro", 7)
-pe6 = Time("Central", 5)
+pe1 = Time("Sport", 18)
+pe2 = Time("Náutico", 15)
+pe3 = Time("Santa Cruz", 14)
+pe4 = Time("Retrô", 14)
+pe5 = Time("Salgueiro", 11)
+pe6 = Time("Central", 8)
 
-pb1 = Time("Botafogo-PB", 10)
-pb2 = Time("Campinense", 9)
-pb3 = Time("Treze", 9)
-pb4 = Time("Sousa", 7)
-pb5 = Time("Nacional de Patos", 5)
-pb6 = Time("Auto Esporte", 4)
+pb1 = Time("Botafogo-PB", 14)
+pb2 = Time("Campinense", 13)
+pb3 = Time("Treze", 13)
+pb4 = Time("Sousa", 10)
+pb5 = Time("Nacional de Patos", 7)
+pb6 = Time("Auto Esporte", 5)
 
-rn1 = Time("América-RN", 10)
-rn2 = Time("ABC", 10)
-rn3 = Time("Globo", 7)
-rn4 = Time("Potiguar de Mossoró", 7)
-rn5 = Time("Baraúnas", 5)
-rn6 = Time("Santa Cruz-RN", 4)
+rn1 = Time("América-RN", 15)
+rn2 = Time("ABC", 15)
+rn3 = Time("Globo", 10)
+rn4 = Time("Potiguar de Mossoró", 10)
+rn5 = Time("Baraúnas", 7)
+rn6 = Time("Santa Cruz-RN", 5)
 
-ba1 = Time("Bahia", 12)
-ba2 = Time("Vitória", 11)
-ba3 = Time("Atlético de Alagoinhas", 7)
-ba4 = Time("Jacuipense", 7)
-ba5 = Time("Juazeirense", 7)
-ba6 = Time("Fluminense de Feira", 5)
+ba1 = Time("Bahia", 18)
+ba2 = Time("Vitória", 17)
+ba3 = Time("Atlético de Alagoinhas", 11)
+ba4 = Time("Jacuipense", 11)
+ba5 = Time("Juazeirense", 11)
+ba6 = Time("Fluminense de Feira", 8)
 
-ce1 = Time("Fortaleza", 12)
-ce2 = Time("Ceará", 12)
-ce3 = Time("Ferroviário", 9)
-ce4 = Time("Floresta", 7)
-ce5 = Time("Icasa", 5)
-ce6 = Time("Guarany de Sobral", 5)
+ce1 = Time("Fortaleza", 18)
+ce2 = Time("Ceará", 18)
+ce3 = Time("Ferroviário", 14)
+ce4 = Time("Floresta", 10)
+ce5 = Time("Icasa", 7)
+ce6 = Time("Guarany de Sobral", 7)
 
-ma1 = Time("Sampaio Correa", 10)
-ma2 = Time("Moto Club", 9)
-ma3 = Time("Maranhão", 9)
-ma4 = Time("Imperatriz", 7)
-ma5 = Time("Pinheiro", 5)
-ma6 = Time("Cordino", 5)
+ma1 = Time("Sampaio Correa", 14)
+ma2 = Time("Moto Club", 13)
+ma3 = Time("Maranhão", 13)
+ma4 = Time("Imperatriz", 10)
+ma5 = Time("Pinheiro", 7)
+ma6 = Time("Cordino", 7)
 
-pi1 = Time("Altos", 10)
-pi2 = Time("River-PI", 9)
-pi3 = Time("Fluminense-PI", 7)
-pi4 = Time("Parnahyba", 7)
-pi5 = Time("4 de Julho", 5)
-pi6 = Time("Picos", 4)
+pi1 = Time("Altos", 14)
+pi2 = Time("River-PI", 13)
+pi3 = Time("Fluminense-PI", 10)
+pi4 = Time("Parnahyba", 10)
+pi5 = Time("4 de Julho", 7)
+pi6 = Time("Picos", 5)
 
 
 alagoano = Campeonato("Alagoano", "Estadual")
@@ -269,6 +272,7 @@ def menu(rodar):
         print()
         print(f"1 - Jogo amistoso")
         print(f"2 - Campeonato")
+        print(f"3 - Campeonato Customizado")
         print(f"0 - Sair")
         resposta = input(": ")
         print()
@@ -312,5 +316,48 @@ def menu(rodar):
 
             camp.simular_temporada()
 
+        elif resposta == "3":
+            customizado = Campeonato("Meu Campeonato", "Customizado")
+            try:
+                quantidade = int(input("Quantidade de times: "))
+
+                idx = 0
+                for time in mundo.times:
+                    print(f"{idx} - {time.nome}")
+                    idx += 1
+
+                print("Escolha os times")
+
+                escolhidos = []
+
+                for q in range(quantidade):
+                    numero = int(input(": "))
+
+                    if numero in escolhidos:
+                        print("Time já escolhido")
+                        continue
+
+                    escolhidos.append(numero)
+
+                    time_custom = mundo.times[numero]
+
+                    customizado.adicionar_time(time_custom)
+
+                customizado.simular_temporada()
+                    
+
+            except:
+                print("Resposta inválida")
+                print("Tente digitar um número válido")
+
+        elif resposta == "0":
+            rodar = False
+
+        else:
+            print("Resposta inválida")
+            print("Tente digitar um número válido")
+
 
 menu(rodar)
+
+print("Programa finalizado")
