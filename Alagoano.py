@@ -43,17 +43,19 @@ class Campeonato():
         print(tabela.sort_values(by="Pontos", ascending=False))
 
     def simular_temporada(self):
+        qtd = 0
         for time in self.times:
             time.jogos = 0
             time.pontos = 0
+            qtd += 1
         rodadas = 0
-        while rodadas < 18:
+        while rodadas < int(qtd * 3):
             print()
             print(f"--- Rodada {rodadas + 1} ---")
             print()
             times = self.times.copy()
 
-            for j in range(3):
+            for j in range(int(qtd / 2)):
                 casa = random.choice(times)
                 times.remove(casa)
                 fora = random.choice(times)
@@ -89,13 +91,13 @@ class Partida():
 
     def jogar_tempo(self):
         for c in range(4):
-            dado = random.randint(1, 160)
-            if dado >= 160 - self.casa.forca - 15:
+            dado = random.randint(1, 180)
+            if dado >= 180 - self.casa.forca - 18:
                 self.gols_casa += 1
 
         for f in range(4):
-            dado = random.randint(1, 160)
-            if dado >= 160 - self.fora.forca:
+            dado = random.randint(1, 180)
+            if dado >= 180 - self.fora.forca:
                 self.gols_fora += 1
 
     def resultado(self):
@@ -113,68 +115,86 @@ class Partida():
 
 mundo = Mundo()
 
-al1 = Time("CSA", 13)
-al2 = Time("CRB", 14)
-al3 = Time("ASA", 10)
-al4 = Time("Murici", 7)
-al5 = Time("Coruripe", 7)
-al6 = Time("CSE", 5)
+al1 = Time("CSA", 21)
+al2 = Time("CRB", 22)
+al3 = Time("ASA", 17)
+al4 = Time("Murici", 14)
+al5 = Time("Coruripe", 11)
+al6 = Time("CSE", 13)
+al7 = Time("Jacioba", 8)
+al8 = Time("CEO", 6)
 
-se1 = Time("Confiança", 14)
-se2 = Time("Sergipe", 13)
-se3 = Time("Itabaiana", 13)
-se4 = Time("Lagarto", 10)
-se5 = Time("Dorense", 6)
-se6 = Time("América de Propriá", 4)
+se1 = Time("Confiança", 20)
+se2 = Time("Sergipe", 19)
+se3 = Time("Itabaiana", 17)
+se4 = Time("Lagarto", 15)
+se5 = Time("Dorense", 10)
+se6 = Time("Falcon", 13)
+se7 = Time("América-SE", 8)
+se8 = Time("Freipaulistano", 6)
 
-pe1 = Time("Sport", 18)
-pe2 = Time("Náutico", 15)
-pe3 = Time("Santa Cruz", 14)
-pe4 = Time("Retrô", 14)
-pe5 = Time("Salgueiro", 11)
-pe6 = Time("Central", 8)
+pe1 = Time("Sport", 24)
+pe2 = Time("Náutico", 20)
+pe3 = Time("Santa Cruz", 21)
+pe4 = Time("Retrô", 18)
+pe5 = Time("Salgueiro", 15)
+pe6 = Time("Central", 14)
+pe7 = Time("Afogados", 12)
+pe8 = Time("Petrolina", 9)
 
-pb1 = Time("Botafogo-PB", 14)
-pb2 = Time("Campinense", 13)
-pb3 = Time("Treze", 13)
-pb4 = Time("Sousa", 10)
-pb5 = Time("Nacional de Patos", 7)
-pb6 = Time("Auto Esporte", 5)
+pb1 = Time("Botafogo-PB", 21)
+pb2 = Time("Campinense", 19)
+pb3 = Time("Treze", 20)
+pb4 = Time("Sousa", 17)
+pb5 = Time("Nacional-PB", 14)
+pb6 = Time("Auto Esporte", 8)
+pb7 = Time("CSP", 12)
+pb8 = Time("Serrano-PB", 9)
 
-rn1 = Time("América-RN", 15)
-rn2 = Time("ABC", 15)
-rn3 = Time("Globo", 10)
-rn4 = Time("Potiguar de Mossoró", 10)
-rn5 = Time("Baraúnas", 7)
-rn6 = Time("Santa Cruz-RN", 5)
+rn1 = Time("América-RN", 20)
+rn2 = Time("ABC", 21)
+rn3 = Time("Globo", 14)
+rn4 = Time("Potiguar", 15)
+rn5 = Time("Alecrim", 11)
+rn6 = Time("Santa Cruz-RN", 16)
+rn7 = Time("Força e Luz", 8)
+rn8 = Time("ASSU", 6)
 
-ba1 = Time("Bahia", 18)
-ba2 = Time("Vitória", 17)
-ba3 = Time("Atlético de Alagoinhas", 11)
-ba4 = Time("Jacuipense", 11)
-ba5 = Time("Juazeirense", 11)
-ba6 = Time("Fluminense de Feira", 8)
+ba1 = Time("Bahia", 24)
+ba2 = Time("Vitória", 23)
+ba3 = Time("Bahia de Feira", 17)
+ba4 = Time("Jacuipense", 16)
+ba5 = Time("Juazeirense", 18)
+ba6 = Time("Itabuna", 13)
+ba7 = Time("Doce Mel", 10)
+ba8 = Time("Barcelona-BA", 8)
 
-ce1 = Time("Fortaleza", 18)
-ce2 = Time("Ceará", 18)
-ce3 = Time("Ferroviário", 14)
-ce4 = Time("Floresta", 10)
-ce5 = Time("Icasa", 7)
-ce6 = Time("Guarany de Sobral", 7)
+ce1 = Time("Fortaleza", 24)
+ce2 = Time("Ceará", 23)
+ce3 = Time("Ferroviário", 19)
+ce4 = Time("Floresta", 16)
+ce5 = Time("Iguatu", 14)
+ce6 = Time("Guarani-J", 9)
+ce7 = Time("Maracanã", 12)
+ce8 = Time("Barbalha", 7)
 
-ma1 = Time("Sampaio Correa", 14)
-ma2 = Time("Moto Club", 13)
-ma3 = Time("Maranhão", 13)
-ma4 = Time("Imperatriz", 10)
-ma5 = Time("Pinheiro", 7)
-ma6 = Time("Cordino", 7)
+ma1 = Time("Sampaio Correa", 21)
+ma2 = Time("Moto Club", 19)
+ma3 = Time("Maranhão", 18)
+ma4 = Time("Imperatriz", 16)
+ma5 = Time("Pinheiro", 14)
+ma6 = Time("Cordino", 9)
+ma7 = Time("IAPE", 12)
+ma8 = Time("Tuntum", 7)
 
-pi1 = Time("Altos", 14)
-pi2 = Time("River-PI", 13)
-pi3 = Time("Fluminense-PI", 10)
-pi4 = Time("Parnahyba", 10)
-pi5 = Time("4 de Julho", 7)
-pi6 = Time("Picos", 5)
+pi1 = Time("Altos", 20)
+pi2 = Time("River-PI", 19)
+pi3 = Time("Flamengo-PI", 17)
+pi4 = Time("Parnahyba", 15)
+pi5 = Time("4 de Julho", 13)
+pi6 = Time("Picos", 11)
+pi7 = Time("Oeirense", 9)
+pi8 = Time("Corisabba", 7)
 
 
 alagoano = Campeonato("Alagoano", "Estadual")
@@ -193,6 +213,8 @@ alagoano.adicionar_time(al3)
 alagoano.adicionar_time(al4)
 alagoano.adicionar_time(al5)
 alagoano.adicionar_time(al6)
+alagoano.adicionar_time(al7)
+alagoano.adicionar_time(al8)
 
 sergipano.adicionar_time(se1)
 sergipano.adicionar_time(se2)
@@ -200,6 +222,8 @@ sergipano.adicionar_time(se3)
 sergipano.adicionar_time(se4)
 sergipano.adicionar_time(se5)
 sergipano.adicionar_time(se6)
+sergipano.adicionar_time(se7)
+sergipano.adicionar_time(se8)
 
 pernanbucano.adicionar_time(pe1)
 pernanbucano.adicionar_time(pe2)
@@ -207,6 +231,8 @@ pernanbucano.adicionar_time(pe3)
 pernanbucano.adicionar_time(pe4)
 pernanbucano.adicionar_time(pe5)
 pernanbucano.adicionar_time(pe6)
+pernanbucano.adicionar_time(pe7)
+pernanbucano.adicionar_time(pe8)
 
 paraibano.adicionar_time(pb1)
 paraibano.adicionar_time(pb2)
@@ -214,6 +240,8 @@ paraibano.adicionar_time(pb3)
 paraibano.adicionar_time(pb4)
 paraibano.adicionar_time(pb5)
 paraibano.adicionar_time(pb6)
+paraibano.adicionar_time(pb7)
+paraibano.adicionar_time(pb8)
 
 potiguar.adicionar_time(rn1)
 potiguar.adicionar_time(rn2)
@@ -221,6 +249,8 @@ potiguar.adicionar_time(rn3)
 potiguar.adicionar_time(rn4)
 potiguar.adicionar_time(rn5)
 potiguar.adicionar_time(rn6)
+potiguar.adicionar_time(rn7)
+potiguar.adicionar_time(rn8)
 
 bahiano.adicionar_time(ba1)
 bahiano.adicionar_time(ba2)
@@ -228,6 +258,8 @@ bahiano.adicionar_time(ba3)
 bahiano.adicionar_time(ba4)
 bahiano.adicionar_time(ba5)
 bahiano.adicionar_time(ba6)
+bahiano.adicionar_time(ba7)
+bahiano.adicionar_time(ba8)
 
 cearense.adicionar_time(ce1)
 cearense.adicionar_time(ce2)
@@ -235,6 +267,8 @@ cearense.adicionar_time(ce3)
 cearense.adicionar_time(ce4)
 cearense.adicionar_time(ce5)
 cearense.adicionar_time(ce6)
+cearense.adicionar_time(ce7)
+cearense.adicionar_time(ce8)
 
 maranhense.adicionar_time(ma1)
 maranhense.adicionar_time(ma2)
@@ -242,6 +276,8 @@ maranhense.adicionar_time(ma3)
 maranhense.adicionar_time(ma4)
 maranhense.adicionar_time(ma5)
 maranhense.adicionar_time(ma6)
+maranhense.adicionar_time(ma7)
+maranhense.adicionar_time(ma8)
 
 piauiense.adicionar_time(pi1)
 piauiense.adicionar_time(pi2)
@@ -249,6 +285,8 @@ piauiense.adicionar_time(pi3)
 piauiense.adicionar_time(pi4)
 piauiense.adicionar_time(pi5)
 piauiense.adicionar_time(pi6)
+piauiense.adicionar_time(pi7)
+piauiense.adicionar_time(pi8)
 
 
 mundo.adicionar_campeonato(alagoano)
@@ -278,30 +316,35 @@ def menu(rodar):
         print()
 
         if resposta == "1":
-            idx = 0
-            for time in mundo.times:
-                print(f"{idx} - {time.nome}")
-                idx += 1
+            try:
+                idx = 0
+                for time in mundo.times:
+                    print(f"{idx} - {time.nome}")
+                    idx += 1
 
-            print("Escolha os times")
-            time1 = int(input(": "))
-            time2 = int(input(": "))
+                print("Escolha os times")
+                time1 = int(input(": "))
+                time2 = int(input(": "))
 
-            casa = mundo.times[time1]
-            fora = mundo.times[time2]
+                casa = mundo.times[time1]
+                fora = mundo.times[time2]
 
-            partida = Partida(casa, fora)
-            partida.mostrar()
-            input()
-            partida.jogar_tempo()
-            input("Fim do Primeiro tempo")
-            partida.placar()
-            input()
-            partida.jogar_tempo()
-            input("Fim de Jogo")
-            partida.placar()
-            partida.resultado()
-            input()
+                partida = Partida(casa, fora)
+                partida.mostrar()
+                input()
+                partida.jogar_tempo()
+                input("Fim do Primeiro tempo")
+                partida.placar()
+                input()
+                partida.jogar_tempo()
+                input("Fim de Jogo")
+                partida.placar()
+                partida.resultado()
+                input()
+                
+            except:
+                print("Resposta inválida")
+                print("Tente digitar um número válido")
 
         elif resposta == "2":
             idx = 0
