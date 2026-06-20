@@ -15,6 +15,34 @@ class Mundo():
             for y in x.times:
                 self.times.append(y)
 
+    def simular_tudo(self):
+        input("--- Simular temporada ---")
+
+        for camp in self.campeonatos:
+            camp.simular_temporada()
+
+        self.times.sort(key=lambda t: (t.pontos, t.gols, t.forca), reverse=True)
+        print()
+        print("Classificados:")
+
+        for n in range(8):
+            t = self.times[n]
+            print(f"{t.nome} --- {t.gols} --- {t.pontos}")
+
+        l1 = self.times[0]
+        l2 = self.times[1]
+        l3 = self.times[2]
+        l4 = self.times[3]
+        l5 = self.times[4]
+        l6 = self.times[5]
+        l7 = self.times[6]
+        l8 = self.times[7]
+
+        lampions = Mata_Mata(l1, l8, l3, l6, l2, l7, l4, l5)
+
+        lampions.simular_mata_mata()
+
+
 class Time():
 
     def __init__(self, nome, forca):
@@ -22,6 +50,7 @@ class Time():
         self.forca = forca
         self.jogos = 0
         self.pontos = 0
+        self.gols = 0
 
 class Campeonato():
 
@@ -37,16 +66,20 @@ class Campeonato():
         tabela = pd.DataFrame({
             "Times": [t.nome for t in self.times],
             "Jogos": [t.jogos for t in self.times],
+            "Gols": [t.gols for t in self.times],
             "Pontos": [t.pontos for t in self.times]
         })
 
         print(tabela.sort_values(by="Pontos", ascending=False))
 
     def simular_temporada(self):
+        print()
+        input(f"Simular Campeonato {self.nome}")
         qtd = 0
         for time in self.times:
             time.jogos = 0
             time.pontos = 0
+            time.gols = 0
             qtd += 1
         rodadas = 0
         while rodadas < int(qtd * 3):
@@ -55,6 +88,8 @@ class Campeonato():
             print()
             times = self.times.copy()
 
+            # input("Simular rodada")
+
             for j in range(int(qtd / 2)):
                 casa = random.choice(times)
                 times.remove(casa)
@@ -62,18 +97,83 @@ class Campeonato():
                 times.remove(fora)
                 
                 partida = Partida(casa, fora)
-                partida.jogar_tempo()
-                partida.jogar_tempo()
-                partida.placar()
+                partida.jogar_partida()
                 partida.resultado()
                 print()
 
             rodadas += 1
 
-        self.mostrar_tabela()
+            self.mostrar_tabela()
 
         print("Fim")
 
+class Mata_Mata():
+
+    def __init__(self, chave_A1, chave_A2, chave_A3, chave_A4, chave_B1, chave_B2, chave_B3, chave_B4):
+        self.chave_A1 = chave_A1
+        self.chave_A2 = chave_A2
+        self.chave_A3 = chave_A3
+        self.chave_A4 = chave_A4
+        self.chave_B1 = chave_B1
+        self.chave_B2 = chave_B2
+        self.chave_B3 = chave_B3
+        self.chave_B4 = chave_B4
+
+    def simular_mata_mata(self):
+        print()
+        input("Simular Campeonato Nordestino")
+
+        print()
+        print("--- Quartas ---")
+
+        jogo1 = Partida(self.chave_A1, self.chave_A2)
+        jogo1.mostrar()
+        jogo1.jogar_partida_mata_mata()
+        self.chave_C1 = jogo1.classificado
+
+        jogo2 = Partida(self.chave_A3, self.chave_A4)
+        jogo2.mostrar()
+        jogo2.jogar_partida_mata_mata()
+        self.chave_C2 = jogo2.classificado
+
+        jogo3 = Partida(self.chave_B1, self.chave_B2)
+        jogo3.mostrar()
+        jogo3.jogar_partida_mata_mata()
+        self.chave_D1 = jogo3.classificado
+
+        jogo4 = Partida(self.chave_B3, self.chave_B4)
+        jogo4.mostrar()
+        jogo4.jogar_partida_mata_mata()
+        self.chave_D2 = jogo4.classificado
+
+        print()
+        print("--- Semi ---")
+
+        jogo5 = Partida(self.chave_C1, self.chave_C2)
+        jogo5.mostrar()
+        jogo5.jogar_partida_mata_mata()
+        self.chave_E1 = jogo5.classificado
+
+        jogo6 = Partida(self.chave_D1, self.chave_D2)
+        jogo6.mostrar()
+        jogo6.jogar_partida_mata_mata()
+        self.chave_E2 = jogo6.classificado
+
+        print()
+        print("--- Final ---")
+
+        jogo7 = Partida(self.chave_E1, self.chave_E2)
+        jogo7.mostrar()
+        jogo7.jogar_partida_mata_mata()
+        self.campeao_lampions = jogo7.classificado
+
+        print()
+        print(f"{self.campeao_lampions.nome} campeão!!!")
+
+class Agregado():
+
+    def __init__(self, time_A, time_B):
+        pass
 
 class Partida():
 
@@ -82,23 +182,80 @@ class Partida():
         self.fora = fora
         self.gols_casa = 0
         self.gols_fora = 0
+        self.gols_casa_penaltis = 0
+        self.gols_fora_penaltis = 0
 
     def mostrar(self):
+        print()
         print(f"{self.casa.nome} VS {self.fora.nome}")
+        input()
 
     def placar(self):
         print(f"{self.casa.nome} {self.gols_casa} X {self.gols_fora} {self.fora.nome}")
 
-    def jogar_tempo(self):
-        for c in range(4):
+    def placar_penaltis(self):
+        print(f"{self.casa.nome} {self.gols_casa_penaltis} X {self.gols_fora_penaltis} {self.fora.nome}")
+
+    def jogar_partida(self):
+
+        for c in range(8):
             dado = random.randint(1, 180)
             if dado >= 180 - self.casa.forca - 18:
                 self.gols_casa += 1
 
-        for f in range(4):
+        for f in range(8):
             dado = random.randint(1, 180)
             if dado >= 180 - self.fora.forca:
                 self.gols_fora += 1
+
+        self.placar()
+
+    def jogar_partida_mata_mata(self):
+        for c in range(8):
+            dado = random.randint(1, 180)
+            if dado >= 180 - self.casa.forca - 18:
+                self.gols_casa += 1
+
+        for f in range(8):
+            dado = random.randint(1, 180)
+            if dado >= 180 - self.fora.forca:
+                self.gols_fora += 1
+
+        self.placar()
+
+        if self.gols_casa == self.gols_fora:
+            print("penaltis")
+            restante = 5
+            penaltis = True
+            while penaltis:
+                dado = random.randint(1, 100)
+                if dado <= 75:
+                    self.gols_casa_penaltis += 1
+                
+                dado = random.randint(1, 100)
+                if dado <= 60:
+                    self.gols_fora_penaltis += 1
+
+                restante -= 1
+
+                if restante < abs(self.gols_casa_penaltis - self.gols_fora_penaltis):
+                    break
+
+                if restante < 1:
+                    restante += 1
+
+            self.placar_penaltis()
+            if self.gols_casa_penaltis > self.gols_fora_penaltis:
+                self.classificado = self.casa
+            else:
+                self.classificado = self.fora
+
+        else:
+            if self.gols_casa > self.gols_fora:
+                self.classificado = self.casa
+            else:
+                self.classificado = self.fora
+
 
     def resultado(self):
         if self.gols_casa > self.gols_fora:
@@ -108,6 +265,9 @@ class Partida():
         else:
             self.casa.pontos += 1
             self.fora.pontos += 1
+
+        self.casa.gols += self.gols_casa
+        self.fora.gols += self.gols_fora
 
         self.casa.jogos += 1
         self.fora.jogos += 1
@@ -311,6 +471,7 @@ def menu(rodar):
         print(f"1 - Jogo amistoso")
         print(f"2 - Campeonato")
         print(f"3 - Campeonato Customizado")
+        print(f"4 - Simular Tudo")
         print(f"0 - Sair")
         resposta = input(": ")
         print()
@@ -330,18 +491,9 @@ def menu(rodar):
                 fora = mundo.times[time2]
 
                 partida = Partida(casa, fora)
-                partida.mostrar()
-                input()
-                partida.jogar_tempo()
-                input("Fim do Primeiro tempo")
-                partida.placar()
-                input()
-                partida.jogar_tempo()
-                input("Fim de Jogo")
-                partida.placar()
+                partida.jogar_partida()
                 partida.resultado()
-                input()
-                
+
             except:
                 print("Resposta inválida")
                 print("Tente digitar um número válido")
@@ -392,6 +544,9 @@ def menu(rodar):
             except:
                 print("Resposta inválida")
                 print("Tente digitar um número válido")
+
+        elif resposta == "4":
+            mundo.simular_tudo()
 
         elif resposta == "0":
             rodar = False
