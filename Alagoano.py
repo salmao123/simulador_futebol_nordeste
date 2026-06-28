@@ -47,7 +47,9 @@ class Time():
 
     def __init__(self, nome, forca):
         self.nome = nome
-        self.forca = forca
+        self.defesa = forca
+        self.meio = forca
+        self.ataque = forca
         self.jogos = 0
         self.pontos = 0
         self.gols = 0
@@ -170,11 +172,6 @@ class Mata_Mata():
         print()
         print(f"{self.campeao_lampions.nome} campeão!!!")
 
-class Agregado():
-
-    def __init__(self, time_A, time_B):
-        pass
-
 class Partida():
 
     def __init__(self, casa, fora):
@@ -198,30 +195,77 @@ class Partida():
 
     def jogar_partida(self):
 
-        for c in range(8):
-            dado = random.randint(1, 180)
-            if dado >= 180 - self.casa.forca - 18:
-                self.gols_casa += 1
+        for c in range(20):
+            dado_casa = random.randint(1, 50) + self.casa.meio
+            dado_fora = random.randint(1, 30) + self.fora.meio
+            if dado_casa >= dado_fora:
+                dado_ataque = random.randint(1, 40) + self.casa.ataque
+                if dado_ataque > 40:
+                    dado_defesa = random.randint(1, 60) + self.fora.defesa
+                    if dado_defesa <= 30:
+                        self.gols_casa += 1
+            else:
+                dado_ataque = random.randint(1, 50) + self.fora.ataque
+                if dado_ataque > 50:
+                    dado_defesa = random.randint(1, 80) + self.casa.defesa
+                    if dado_defesa <= 30:
+                        self.gols_fora += 1
 
-        for f in range(8):
-            dado = random.randint(1, 180)
-            if dado >= 180 - self.fora.forca:
-                self.gols_fora += 1
+        self.placar()
+
+    def jogar_partida_real_time(self):
+        for c in range(20):
+            print()
+            dado_casa = random.randint(1, 50) + self.casa.meio
+            dado_fora = random.randint(1, 30) + self.fora.meio
+            if dado_casa >= dado_fora:
+                input(f"O time {self.casa.nome} está com a bola")
+                dado_ataque = random.randint(1, 40) + self.casa.ataque
+                if dado_ataque > 40:
+                    input(f"Eles conseguem criar uma chance de perigo")
+                    dado_defesa = random.randint(1, 60) + self.fora.defesa
+                    if dado_defesa <= 30:
+                        input(f"Golll!!! A defesa não conseguiu segurar")
+                        self.gols_casa += 1
+                    else:
+                        input(f"Afasta a defesa pra longe")
+                else:
+                    input(f"Mas eles não conseguiram criar nada")
+            else:
+                input(f"O time {self.fora.nome} está com a bola")
+                dado_ataque = random.randint(1, 50) + self.fora.ataque
+                if dado_ataque > 50:
+                    input(f"Eles conseguem criar uma chance de perigo")
+                    dado_defesa = random.randint(1, 80) + self.casa.defesa
+                    if dado_defesa <= 30:
+                        input(f"Golll!!! A defesa não conseguiu segurar")
+                        self.gols_fora += 1
+                    else:
+                        input(f"Afasta a defesa pra longe")
+                else:
+                    input(f"Mas eles não conseguiram criar nada")
 
         self.placar()
 
     def jogar_partida_mata_mata(self):
-        for c in range(8):
-            dado = random.randint(1, 180)
-            if dado >= 180 - self.casa.forca - 18:
-                self.gols_casa += 1
-
-        for f in range(8):
-            dado = random.randint(1, 180)
-            if dado >= 180 - self.fora.forca:
-                self.gols_fora += 1
+        for c in range(20):
+            dado_casa = random.randint(1, 30) + self.casa.meio
+            dado_fora = random.randint(1, 50) + self.fora.meio
+            if dado_casa >= dado_fora:
+                dado_ataque = random.randint(1, 40) + self.casa.ataque
+                if dado_ataque > 40:
+                    dado_defesa = random.randint(1, 60) + self.fora.defesa
+                    if dado_defesa <= 30:
+                        self.gols_casa += 1
+            else:
+                dado_ataque = random.randint(1, 50) + self.fora.ataque
+                if dado_ataque > 50:
+                    dado_defesa = random.randint(1, 80) + self.casa.defesa
+                    if dado_defesa <= 30:
+                        self.gols_fora += 1
 
         self.placar()
+        input()
 
         if self.gols_casa == self.gols_fora:
             print("penaltis")
@@ -245,6 +289,7 @@ class Partida():
                     restante += 1
 
             self.placar_penaltis()
+            input()
             if self.gols_casa_penaltis > self.gols_fora_penaltis:
                 self.classificado = self.casa
             else:
@@ -491,7 +536,7 @@ def menu(rodar):
                 fora = mundo.times[time2]
 
                 partida = Partida(casa, fora)
-                partida.jogar_partida()
+                partida.jogar_partida_real_time()
                 partida.resultado()
 
             except:
