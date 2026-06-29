@@ -15,44 +15,121 @@ class Mundo():
             for y in x.times:
                 self.times.append(y)
 
+    def simular_mercado(self):
+        for t in self.times:
+            t.contratar_vender()
+
     def simular_tudo(self):
-        input("--- Simular temporada ---")
+        temporada = True
 
-        for camp in self.campeonatos:
-            camp.simular_temporada()
+        while temporada:
+            input("--- Simular temporada ---")
 
-        self.times.sort(key=lambda t: (t.pontos, t.gols, t.forca), reverse=True)
-        print()
-        print("Classificados:")
+            for camp in self.campeonatos:
+                camp.simular_temporada()
 
-        for n in range(8):
-            t = self.times[n]
-            print(f"{t.nome} --- {t.gols} --- {t.pontos}")
+            self.times.sort(key=lambda t: (t.pontos, t.gols, t.forca), reverse=True)
+            print()
+            print("Classificados:")
 
-        l1 = self.times[0]
-        l2 = self.times[1]
-        l3 = self.times[2]
-        l4 = self.times[3]
-        l5 = self.times[4]
-        l6 = self.times[5]
-        l7 = self.times[6]
-        l8 = self.times[7]
+            for n in range(8):
+                t = self.times[n]
+                print(f"{t.nome} --- {t.gols} --- {t.pontos}")
 
-        lampions = Mata_Mata(l1, l8, l3, l6, l2, l7, l4, l5)
+            l1 = self.times[0]
+            l2 = self.times[1]
+            l3 = self.times[2]
+            l4 = self.times[3]
+            l5 = self.times[4]
+            l6 = self.times[5]
+            l7 = self.times[6]
+            l8 = self.times[7]
 
-        lampions.simular_mata_mata()
+            lampions = Mata_Mata(l1, l8, l3, l6, l2, l7, l4, l5)
 
+            lampions.simular_mata_mata()
+
+            input("Simular mercado de transferências")
+            self.simular_mercado()
+
+            resposta = input(f"Pressione qualquer botão para avançar ou (P) para parar: ")
+
+            if resposta == "p" or resposta == "P":
+                temporada = False
 
 class Time():
 
     def __init__(self, nome, forca):
         self.nome = nome
+        self.forca = forca
         self.defesa = forca
         self.meio = forca
         self.ataque = forca
         self.jogos = 0
         self.pontos = 0
         self.gols = 0
+        self.controlado = False
+
+    def definir_playstyle(self):
+        mais_forte = max(self.defesa, self.meio, self.ataque)
+        setores_fortes = []
+
+        if self.defesa == mais_forte:
+            setores_fortes.append("defesa")
+        if self.meio == mais_forte:
+            setores_fortes.append("meio")
+        if self.ataque == mais_forte:
+            setores_fortes.append("ataque")
+
+        if len(setores_fortes) == 3:
+            return "Equilibrado"
+        
+        elif len(setores_fortes) == 2:
+            if "defesa" in setores_fortes and "ataque" in setores_fortes:
+                return "Contra-Ataque" 
+            elif "defesa" in setores_fortes and "meio" in setores_fortes:
+                return "Sólido"
+            elif "meio" in setores_fortes and "ataque" in setores_fortes:
+                return "Tik-Taka"
+            
+        elif len(setores_fortes) == 1:
+            if "defesa" in setores_fortes:
+                return "Retranca"
+            elif "meio" in setores_fortes:
+                return "Cadenciado"
+            elif "ataque" in setores_fortes:
+                return "Pressão"
+            
+    def contratar_vender(self):
+        contratos = random.randint(1, 6)
+        vendas = random.randint(1, 6)
+        setores = ["defesa", "meio", "ataque"]
+
+        while contratos > 0:
+            setor = random.choice(setores)
+            if setor == "defesa":
+                if self.defesa < 25:
+                    self.defesa += 1
+            elif setor == "meio":
+                if self.meio < 25:
+                    self.meio += 1
+            elif setor == "ataque":
+                if self.ataque < 25:
+                    self.ataque += 1
+            contratos -= 1
+
+        while vendas > 0:
+            setor = random.choice(setores)
+            if setor == "defesa":
+                if self.defesa > 1:
+                    self.defesa -= 1
+            elif setor == "meio":
+                if self.meio > 1:
+                    self.meio -= 1
+            elif setor == "ataque":
+                if self.ataque > 1:
+                    self.ataque -= 1
+            vendas -= 1
 
 class Campeonato():
 
@@ -60,6 +137,7 @@ class Campeonato():
         self.nome = nome
         self.categoria = categoria
         self.times = []
+        self.rodadas = []
 
     def adicionar_time(self, time):
         self.times.append(time)
@@ -69,7 +147,8 @@ class Campeonato():
             "Times": [t.nome for t in self.times],
             "Jogos": [t.jogos for t in self.times],
             "Gols": [t.gols for t in self.times],
-            "Pontos": [t.pontos for t in self.times]
+            "Pontos": [t.pontos for t in self.times],
+            "Estilo": [t.definir_playstyle() for t in self.times]
         })
 
         print(tabela.sort_values(by="Pontos", ascending=False))
@@ -85,14 +164,13 @@ class Campeonato():
             qtd += 1
         rodadas = 0
         while rodadas < int(qtd * 3):
-            print()
-            print(f"--- Rodada {rodadas + 1} ---")
-            print()
+            rodada = Rodada(rodadas + 1)
             times = self.times.copy()
 
             # input("Simular rodada")
 
             for j in range(int(qtd / 2)):
+                
                 casa = random.choice(times)
                 times.remove(casa)
                 fora = random.choice(times)
@@ -102,10 +180,15 @@ class Campeonato():
                 partida.jogar_partida()
                 partida.resultado()
                 print()
+                rodada.add_partida(partida)
 
+            rodada.mostrar_rodada()
+            self.rodadas.append(rodada)
             rodadas += 1
 
+            print()
             self.mostrar_tabela()
+            print()
 
         print("Fim")
 
@@ -177,6 +260,10 @@ class Partida():
     def __init__(self, casa, fora):
         self.casa = casa
         self.fora = fora
+        self.posse_casa = 0
+        self.posse_fora = 0
+        self.chutes_casa = 0
+        self.chutes_fora = 0
         self.gols_casa = 0
         self.gols_fora = 0
         self.gols_casa_penaltis = 0
@@ -192,6 +279,15 @@ class Partida():
 
     def placar_penaltis(self):
         print(f"{self.casa.nome} {self.gols_casa_penaltis} X {self.gols_fora_penaltis} {self.fora.nome}")
+
+    def estatisticas(self):
+        print("--- Estatísticas ---")
+        print(f"Posse de bola - {self.posse_casa * 5}% X {self.posse_fora * 5}%")
+        print(f"Finalizações - {self.chutes_casa} X {self.chutes_fora}")
+
+    def estilos_de_jogo(self):
+        print("--- Estilos de jogo ---")
+        print(f"({self.casa.definir_playstyle()}) X ({self.fora.definir_playstyle()})")
 
     def jogar_partida(self):
 
@@ -211,17 +307,17 @@ class Partida():
                     if dado_defesa <= 30:
                         self.gols_fora += 1
 
-        self.placar()
-
     def jogar_partida_real_time(self):
         for c in range(20):
             print()
             dado_casa = random.randint(1, 50) + self.casa.meio
             dado_fora = random.randint(1, 30) + self.fora.meio
             if dado_casa >= dado_fora:
+                self.posse_casa += 1
                 input(f"O time {self.casa.nome} está com a bola")
                 dado_ataque = random.randint(1, 40) + self.casa.ataque
                 if dado_ataque > 40:
+                    self.chutes_casa += 1
                     input(f"Eles conseguem criar uma chance de perigo")
                     dado_defesa = random.randint(1, 60) + self.fora.defesa
                     if dado_defesa <= 30:
@@ -232,9 +328,11 @@ class Partida():
                 else:
                     input(f"Mas eles não conseguiram criar nada")
             else:
+                self.posse_fora += 1
                 input(f"O time {self.fora.nome} está com a bola")
                 dado_ataque = random.randint(1, 50) + self.fora.ataque
                 if dado_ataque > 50:
+                    self.chutes_fora += 1
                     input(f"Eles conseguem criar uma chance de perigo")
                     dado_defesa = random.randint(1, 80) + self.casa.defesa
                     if dado_defesa <= 30:
@@ -317,6 +415,21 @@ class Partida():
         self.casa.jogos += 1
         self.fora.jogos += 1
 
+class Rodada():
+
+    def __init__(self, numero):
+        self.numero = numero
+        self.partidas = []
+
+    def add_partida(self, partida):
+        self.partidas.append(partida)
+
+    def mostrar_rodada(self):
+        print()
+        print(f"Rodada {self.numero}")
+        print()
+        for p in self.partidas:
+            p.placar()
 
 mundo = Mundo()
 
@@ -537,6 +650,8 @@ def menu(rodar):
 
                 partida = Partida(casa, fora)
                 partida.jogar_partida_real_time()
+                partida.estilos_de_jogo()
+                partida.estatisticas()
                 partida.resultado()
 
             except:
@@ -592,6 +707,22 @@ def menu(rodar):
 
         elif resposta == "4":
             mundo.simular_tudo()
+
+        elif resposta == "5":
+            try:
+                idx = 0
+                for time in mundo.times:
+                    print(f"{idx} - {time.nome}")
+                    idx += 1
+
+                print("Escolha o time para seguir")
+                seguir = int(input(": "))
+
+                time_seguido = mundo.times[seguir]
+
+            except:
+                print("Resposta inválida")
+                print("Tente digitar um número válido")
 
         elif resposta == "0":
             rodar = False
