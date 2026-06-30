@@ -23,6 +23,9 @@ class Mundo():
         temporada = True
 
         while temporada:
+            input("Simular mercado de transferências")
+            self.simular_mercado()
+
             input("--- Simular temporada ---")
 
             for camp in self.campeonatos:
@@ -49,9 +52,6 @@ class Mundo():
 
             lampions.simular_mata_mata()
 
-            input("Simular mercado de transferências")
-            self.simular_mercado()
-
             resposta = input(f"Pressione qualquer botão para avançar ou (P) para parar: ")
 
             if resposta == "p" or resposta == "P":
@@ -68,7 +68,8 @@ class Time():
         self.jogos = 0
         self.pontos = 0
         self.gols = 0
-        self.controlado = False
+        self.sofridos = 0
+        self.posse = 0
 
     def definir_playstyle(self):
         mais_forte = max(self.defesa, self.meio, self.ataque)
@@ -146,7 +147,9 @@ class Campeonato():
         tabela = pd.DataFrame({
             "Times": [t.nome for t in self.times],
             "Jogos": [t.jogos for t in self.times],
+            "Posse Média": [round(t.posse * 100 / (20 * t.jogos), 2) for t in self.times],
             "Gols": [t.gols for t in self.times],
+            "Sofridos": [t.sofridos for t in self.times],
             "Pontos": [t.pontos for t in self.times],
             "Estilo": [t.definir_playstyle() for t in self.times]
         })
@@ -161,6 +164,8 @@ class Campeonato():
             time.jogos = 0
             time.pontos = 0
             time.gols = 0
+            time.sofridos = 0
+            time.posse = 0
             qtd += 1
         rodadas = 0
         while rodadas < int(qtd * 3):
@@ -295,12 +300,14 @@ class Partida():
             dado_casa = random.randint(1, 50) + self.casa.meio
             dado_fora = random.randint(1, 30) + self.fora.meio
             if dado_casa >= dado_fora:
+                self.casa.posse += 1
                 dado_ataque = random.randint(1, 40) + self.casa.ataque
                 if dado_ataque > 40:
                     dado_defesa = random.randint(1, 60) + self.fora.defesa
                     if dado_defesa <= 30:
                         self.gols_casa += 1
             else:
+                self.fora.posse += 1
                 dado_ataque = random.randint(1, 50) + self.fora.ataque
                 if dado_ataque > 50:
                     dado_defesa = random.randint(1, 80) + self.casa.defesa
@@ -410,7 +417,9 @@ class Partida():
             self.fora.pontos += 1
 
         self.casa.gols += self.gols_casa
+        self.casa.sofridos += self.gols_fora
         self.fora.gols += self.gols_fora
+        self.fora.sofridos += self.gols_casa
 
         self.casa.jogos += 1
         self.fora.jogos += 1
