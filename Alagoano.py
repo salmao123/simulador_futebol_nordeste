@@ -35,7 +35,7 @@ class Mundo():
             print()
             print("Classificados:")
 
-            for n in range(8):
+            for n in range(16):
                 t = self.times[n]
                 print(f"{t.nome} --- {t.gols} --- {t.pontos}")
 
@@ -47,8 +47,17 @@ class Mundo():
             l6 = self.times[5]
             l7 = self.times[6]
             l8 = self.times[7]
+            l9 = self.times[8]
+            l10 = self.times[9]
+            l11 = self.times[10]
+            l12 = self.times[11]
+            l13 = self.times[12]
+            l14 = self.times[13]
+            l15 = self.times[14]
+            l16 = self.times[15]
+            
 
-            lampions = Mata_Mata(l1, l8, l3, l6, l2, l7, l4, l5)
+            lampions = Mata_Mata(l1, l16, l3, l14, l5, l12, l7, l10, l2, l15, l4, l13, l6, l11, l8, l9)
 
             lampions.simular_mata_mata()
 
@@ -199,22 +208,30 @@ class Campeonato():
 
 class Mata_Mata():
 
-    def __init__(self, chave_A1, chave_A2, chave_A3, chave_A4, chave_B1, chave_B2, chave_B3, chave_B4):
+    def __init__(self, chave_A1, chave_A2, chave_A3, chave_A4, chave_A5, chave_A6, chave_A7, chave_A8, chave_B1, chave_B2, chave_B3, chave_B4, chave_B5, chave_B6, chave_B7, chave_B8):
         self.chave_A1 = chave_A1
         self.chave_A2 = chave_A2
         self.chave_A3 = chave_A3
         self.chave_A4 = chave_A4
+        self.chave_A5 = chave_A5
+        self.chave_A6 = chave_A6
+        self.chave_A7 = chave_A7
+        self.chave_A8 = chave_A8
         self.chave_B1 = chave_B1
         self.chave_B2 = chave_B2
         self.chave_B3 = chave_B3
         self.chave_B4 = chave_B4
+        self.chave_B5 = chave_B5
+        self.chave_B6 = chave_B6
+        self.chave_B7 = chave_B7
+        self.chave_B8 = chave_B8
 
     def simular_mata_mata(self):
         print()
         input("Simular Campeonato Nordestino")
 
         print()
-        print("--- Quartas ---")
+        print("--- Oitavas ---")
 
         jogo1 = Partida(self.chave_A1, self.chave_A2)
         jogo1.mostrar()
@@ -226,36 +243,81 @@ class Mata_Mata():
         jogo2.jogar_partida_mata_mata()
         self.chave_C2 = jogo2.classificado
 
-        jogo3 = Partida(self.chave_B1, self.chave_B2)
+        jogo3 = Partida(self.chave_A5, self.chave_A6)
         jogo3.mostrar()
         jogo3.jogar_partida_mata_mata()
-        self.chave_D1 = jogo3.classificado
+        self.chave_C3 = jogo3.classificado
 
-        jogo4 = Partida(self.chave_B3, self.chave_B4)
+        jogo4 = Partida(self.chave_A7, self.chave_A8)
         jogo4.mostrar()
         jogo4.jogar_partida_mata_mata()
-        self.chave_D2 = jogo4.classificado
+        self.chave_C4 = jogo4.classificado
+
+        jogo5 = Partida(self.chave_B1, self.chave_B2)
+        jogo5.mostrar()
+        jogo5.jogar_partida_mata_mata()
+        self.chave_D1 = jogo5.classificado
+
+        jogo6 = Partida(self.chave_B3, self.chave_B4)
+        jogo6.mostrar()
+        jogo6.jogar_partida_mata_mata()
+        self.chave_D2 = jogo6.classificado
+
+        jogo7 = Partida(self.chave_B5, self.chave_B6)
+        jogo7.mostrar()
+        jogo7.jogar_partida_mata_mata()
+        self.chave_D3 = jogo7.classificado
+
+        jogo8 = Partida(self.chave_B7, self.chave_B8)
+        jogo8.mostrar()
+        jogo8.jogar_partida_mata_mata()
+        self.chave_D4 = jogo8.classificado
+
+        print()
+        print("--- Quartas ---")
+
+        jogo9 = Partida(self.chave_C1, self.chave_C2)
+        jogo9.mostrar()
+        jogo9.jogar_partida_mata_mata()
+        self.chave_E1 = jogo9.classificado
+
+        jogo10 = Partida(self.chave_C3, self.chave_C4)
+        jogo10.mostrar()
+        jogo10.jogar_partida_mata_mata()
+        self.chave_E2 = jogo10.classificado
+
+        jogo11 = Partida(self.chave_D1, self.chave_D2)
+        jogo11.mostrar()
+        jogo11.jogar_partida_mata_mata()
+        self.chave_F1 = jogo11.classificado
+
+        jogo12 = Partida(self.chave_D3, self.chave_D4)
+        jogo12.mostrar()
+        jogo12.jogar_partida_mata_mata()
+        self.chave_F2 = jogo12.classificado
+
 
         print()
         print("--- Semi ---")
 
-        jogo5 = Partida(self.chave_C1, self.chave_C2)
-        jogo5.mostrar()
-        jogo5.jogar_partida_mata_mata()
-        self.chave_E1 = jogo5.classificado
+        jogo13 = Partida(self.chave_E1, self.chave_E2)
+        jogo13.mostrar()
+        jogo13.jogar_partida_mata_mata()
+        self.chave_G1 = jogo13.classificado
 
-        jogo6 = Partida(self.chave_D1, self.chave_D2)
-        jogo6.mostrar()
-        jogo6.jogar_partida_mata_mata()
-        self.chave_E2 = jogo6.classificado
+        jogo14 = Partida(self.chave_F1, self.chave_F2)
+        jogo14.mostrar()
+        jogo14.jogar_partida_mata_mata()
+        self.chave_G2 = jogo14.classificado
+
 
         print()
         print("--- Final ---")
 
-        jogo7 = Partida(self.chave_E1, self.chave_E2)
-        jogo7.mostrar()
-        jogo7.jogar_partida_mata_mata()
-        self.campeao_lampions = jogo7.classificado
+        jogo15 = Partida(self.chave_G1, self.chave_G2)
+        jogo15.mostrar()
+        jogo15.jogar_partida_mata_mata()
+        self.campeao_lampions = jogo15.classificado
 
         print()
         print(f"{self.campeao_lampions.nome} campeão!!!")
